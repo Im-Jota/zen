@@ -12,11 +12,14 @@ function mergeManifest(mainFile, browserFile) {
   return JSON.stringify(merge(main, browser))
 }
 
-module.exports = {
+const config = {
+  mode: process.env.APP_ENV || 'development',
   entry: './src/main.js',
   output: {
     filename: '[name].[contenthash].js',
-    path: path.join(__dirname, 'dist')
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/',
+    clean: true,
   },
   module: {
     rules: [
@@ -53,7 +56,7 @@ module.exports = {
       safe: true,
     }),
     new CopyWebpackPlugin({
-    patterns: [
+      patterns: [
         {
           from: path.join(__dirname, 'manifest', 'main.json'),
           to: path.join(__dirname, 'dist', 'manifest.json'),
@@ -87,3 +90,9 @@ module.exports = {
     },
   },
 }
+
+if(config.mode == 'development') {
+  config.devtool = 'source-map';
+};
+
+module.exports = config;
