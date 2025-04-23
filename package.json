@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "webpack serve --config ./config/webpack.dev.js",
+    "dev": "node ./config/webpack.dev.js",
     "build": "webpack --config ./config/webpack.prod.js"
   },
   "keywords": [],
