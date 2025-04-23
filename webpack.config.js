@@ -36,7 +36,7 @@ const config = {
       },
       {
         test: /\.js$/,
-        exclude: /node-modules/,
+        exclude: /node_modules/,
         loader: 'babel-loader'
       },
       {
