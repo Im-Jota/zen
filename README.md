@@ -44,7 +44,3 @@ npm run build
 After running `npm run build`, the production-ready files will be generated in the `dist/` folder.
 
 You can set this folder as your new tab page using browser extensions like "New Tab Redirect" or by packaging it as a browser extension.
-
-## 📄 License
-
-MIT License
