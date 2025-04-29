@@ -4,6 +4,7 @@ import persistedState from 'pinia-plugin-persistedstate';
 
 import App from './App.vue';
 import './main.css';
+import "gridstack/dist/gridstack.css";
 
 const app = createApp(App);
 const pinia = createPinia();
