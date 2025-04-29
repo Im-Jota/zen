@@ -10,6 +10,7 @@ const useTabStore = defineStore('tabStore', {
 
     },
     shortcuts: true,
+    state: true,
   }),
 
   actions: {
@@ -17,6 +18,10 @@ const useTabStore = defineStore('tabStore', {
       document.documentElement.setAttribute('data-theme', this.theme);
 
       this.changeBackground();
+    },
+
+    updateState() {
+      this.state = !this.state;
     },
 
     setTheme() {
