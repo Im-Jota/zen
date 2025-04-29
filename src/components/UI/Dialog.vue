@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container"
+    class="containerDialog"
     :class="{'show' : show}"
     @click="closeModal"
   >
@@ -53,7 +53,7 @@
 </script>
 
 <style scoped>
-.container {
+.containerDialog {
   position: absolute;
   top: 0;
   right: 0;
@@ -65,7 +65,7 @@
   transition: .3s ease-in-out background, 1s ease-in-out width;
 }
 
-.container.show {
+.containerDialog.show {
   width: 100%;
   background-color: rgba(0, 0, 0, .4);
   transition: 3s ease-in-out background, .6s ease-in-out width;

@@ -1,14 +1,7 @@
 <template>
-  <Button
-    @click="openModal"
-    icon="material-symbols-light:settings-outline-rounded" 
-    iconSize="1.4rem"
-    class="bg"
-    bound
-  />
   <Dialog
-    :show="modal"
-    @open="openModal"
+    :show="settings.state"
+    @open="settings.updateState"
     title="Settings"
   >
     <div class="nav">
@@ -36,6 +29,10 @@
         <div class="flex justify-between align-center">
           <span>Dark Mode</span>
           <Switch @click="settings.setTheme()" :state="settings.theme == 'dark'" />
+        </div>
+        <div class="flex justify-between align-center">
+          <span>Personalize</span>
+          <Switch @click="widgets.changeState" :state="widgets.state == true" />
         </div>
         <div class="flex justify-between align-center">
           <span>Background</span>
@@ -76,6 +73,7 @@
   import Dropdown from './UI/Dropdown.vue';
   import ColorPicker from './UI/ColorPicker.vue';
   import useTabStore from '../stores/useTabStore.js';
+  import useWidgets from '../stores/useWidgets.js';
 
   export default {
     data() {
@@ -83,6 +81,7 @@
         modal: false,
         tab: 0,
         settings: useTabStore(),
+        widgets: useWidgets(),
         background: {
           type: null,
           default: true,
