@@ -74,12 +74,11 @@ export default {
   text-align: center;
   font-family: 'Arial', sans-serif;
   color: #333;
-  background-color: #111;
+  background-color: rgba(20, 20, 20, .4);
+  backdrop-filter: blur(.2rem);
   border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 400px; /* El tamaño máximo del reloj */
 }
 
 .time {
