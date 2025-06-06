@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <img src="../assets/favicon.png" />
-    <Input placeholder="Search something" class="bg" v-model="text" @enter-pressed="search()" />
+    <Input placeholder="Search something" full class="bg" v-model="text" @enter-pressed="search()" />
     <Button icon="material-symbols-light:search-rounded" size="25px" flat class="text-color" @click="search()" />
   </div>
 </template>
