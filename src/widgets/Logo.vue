@@ -10,7 +10,7 @@
 
 <style scoped>
 .containerLogo {
-  padding: .08rem .2rem;
+  padding: .1rem .2rem;
   width: 100%;
   height: 100%;
   display: flex;
@@ -19,9 +19,7 @@
 }
 
 .logo {
-  height: 90%;
-  max-height: 90px;
-  width: 100%;
-  max-width: 400px;
+  width: 60%;
+  max-width: 300px;
 }
 </style>
