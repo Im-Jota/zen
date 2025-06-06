@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <img src="../assets/favicon.png" />
-    <Input placeholder="Search something" class="bg" v-model="text" @enter-pressed="search()" />
+    <Input placeholder="Search something" full class="bg" v-model="text" @enter-pressed="search()" />
     <Button icon="material-symbols-light:search-rounded" size="25px" flat class="text-color" @click="search()" />
   </div>
 </template>
@@ -9,10 +9,12 @@
 <script>
   import Input from '../components/UI/Input.vue';
   import Button from '../components/UI/Button.vue';
+  import useTabStore from '../stores/useTabStore';
   export default {
     data() {
       return {
         text: '',
+        settings: useTabStore(),
       }
     },
 
@@ -25,7 +27,7 @@
       search() {
         console.log(this.text);
         const query = encodeURIComponent(this.text);
-        window.location.href = `https://astiango.co/?q=${query}`;
+        this.settings.openLinkTab(`https://astiango.co/?q=${query}`);
       }
     }
   }
