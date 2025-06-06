@@ -1,215 +1,216 @@
 <template>
-  <div class="bookmark-container">
-    <!-- Barra de Marcadores -->
-    <div class="bookmark-header">
-      <h2>Mis Marcadores</h2>
-      <button class="add-bookmark-btn" @click="toggleAddBookmarkModal">+ Agregar Marcador</button>
+  <div class="containerMarked">
+    <div class="tabs">
+      <button v-for="tab in categories" :key="tab" :class="['tab', { active: activeTab === tab }, {'text' : settings.background.type == 'Unsplash'}]"
+        @click="setActiveTab(tab)">
+        {{ tab }}
+      </button>
     </div>
 
-    <div class="bookmark-bar">
-      <div v-for="bookmark in bookmarks" :key="bookmark.id" class="bookmark-item">
-        <div class="bookmark-icon-container">
-          <img :src="bookmark.icon" alt="icon" class="bookmark-icon">
+    <div class="grid">
+      <a v-for="(item, index) in bookmarks[activeTab]" :key="index" class="card" @click="settings.openLinkTab(item.url)">
+        <div class="column ga-1 align-center" :class="{ 'white': settings.background.type == 'Unsplash' }">
+          <img :src="item.logo" width="30" />
+          {{ item.title }}
         </div>
-        <div class="bookmark-info">
-          <span class="bookmark-name">{{ bookmark.name }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal para agregar un nuevo marcador -->
-    <div v-if="isAddModalVisible" class="modal">
-      <div class="modal-content">
-        <h3>Nuevo Marcador</h3>
-        <input v-model="newBookmarkName" placeholder="Nombre del marcador" class="modal-input" />
-        <input v-model="newBookmarkIcon" placeholder="URL del ícono" class="modal-input" />
-        <button @click="addBookmark" class="modal-btn">Agregar</button>
-        <button @click="toggleAddBookmarkModal" class="modal-btn cancel">Cancelar</button>
-      </div>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
+import useTabStore from '../stores/useTabStore.js';
 export default {
+  name: 'BookmarkTabs',
   data() {
     return {
-      isAddModalVisible: false, // Controlar si el modal de agregar marcador está visible
-      newBookmarkName: '', // Nombre del marcador
-      newBookmarkIcon: '', // URL del ícono del marcador
-      bookmarks: [
-        { id: 1, name: 'Facebook', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1024px-Facebook_f_logo_%282019%29.svg.png' },
-        { id: 2, name: 'Twitter', icon: 'https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_2021.svg' },
-        { id: 3, name: 'GitHub', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/Octicons-mark-github.svg' }
-      ]
-    };
+      settings: new useTabStore(),
+      categories: ['Recent', 'Personal', 'Work', 'Study'],
+      activeTab: 'Recent',
+      bookmarks: {
+        Recent: [
+          {
+            title: 'Stake',
+            url: 'https://stake.com',
+            logo: 'https://www.google.com/s2/favicons?domain=stake.com&sz=64'
+          },
+          { 
+            title: 'YouTube',
+            url: 'https://youtube.com',
+            logo: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=64'
+          },
+          { 
+            title: 'Reddit',
+            url: 'https://reddit.com',
+            logo: 'https://www.google.com/s2/favicons?domain=reddit.com&sz=64'
+          },
+          { 
+            title: 'Spotify',
+            url: 'https://spotify.com',
+            logo: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=64'
+          },
+          { 
+            title: 'GitHub',
+            url: 'https://github.com',
+            logo: 'https://www.google.com/s2/favicons?domain=github.com&sz=64' 
+          },
+          { 
+            title: 'Notion',
+            url: 'https://notion.so',
+            logo: 'https://www.google.com/s2/favicons?domain=notion.so&sz=64' 
+          },
+          { 
+            title: 'MDN Web Docs',
+            url: 'https://developer.mozilla.org',
+            logo: 'https://www.google.com/s2/favicons?domain=mozilla.org&sz=64' 
+          },
+          { 
+            title: 'FreeCodeCamp',
+            url: 'https://freecodecamp.org',
+            logo: 'https://www.google.com/s2/favicons?domain=freecodecamp.org&sz=64' 
+          },
+        ],
+        Personal: [
+          { 
+            title: 'Reddit',
+            url: 'https://reddit.com',
+            logo: 'https://www.google.com/s2/favicons?domain=reddit.com&sz=64' 
+          },
+          { 
+            title: 'Spotify',
+            url: 'https://spotify.com',
+            logo: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=64' 
+          },
+        ],
+        Work: [
+          { 
+            title: 'GitHub',
+            url: 'https://github.com',
+            logo: 'https://www.google.com/s2/favicons?domain=github.com&sz=64' 
+          },
+          { 
+            title: 'Notion',
+            url: 'https://notion.so',
+            logo: 'https://www.google.com/s2/favicons?domain=notion.so&sz=64' 
+          },
+        ],
+        Study: [
+          { 
+            title: 'MDN Web Docs',
+            url: 'https://developer.mozilla.org',
+            logo: 'https://www.google.com/s2/favicons?domain=mozilla.org&sz=64' 
+          },
+          { 
+            title: 'FreeCodeCamp',
+            url: 'https://freecodecamp.org',
+            logo: 'https://www.google.com/s2/favicons?domain=freecodecamp.org&sz=64'
+           },
+        ],
+      }
+    }
   },
   methods: {
-    // Agregar un marcador
-    addBookmark() {
-      if (this.newBookmarkName && this.newBookmarkIcon) {
-        const newId = this.bookmarks.length + 1;
-        this.bookmarks.push({
-          id: newId,
-          name: this.newBookmarkName,
-          icon: this.newBookmarkIcon
-        });
-        this.newBookmarkName = '';
-        this.newBookmarkIcon = '';
-        this.toggleAddBookmarkModal();
-      }
-    },
-    // Eliminar un marcador
-    removeBookmark(id) {
-      this.bookmarks = this.bookmarks.filter(bookmark => bookmark.id !== id);
-    },
-    // Toggle para abrir y cerrar el modal de agregar marcador
-    toggleAddBookmarkModal() {
-      this.isAddModalVisible = !this.isAddModalVisible;
+    setActiveTab(tab) {
+      this.activeTab = tab
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.bookmark-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f4f4f4;
-}
-
-.bookmark-header {
-  display: flex;
-  justify-content: space-between;
+.containerMarked {
   width: 100%;
-  max-width: 800px;
-  align-items: center;
+  height: 100%;
 }
 
-.bookmark-header h2 {
-  font-size: 24px;
-  color: #333;
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.add-bookmark-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 5px;
+.tab {
+  background-color: transparent;
+  color: var(--text-color);
+  padding: 10px 16px;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  transition: 0.3s;
+  position: relative;
+  font-weight: 600;
 }
 
-.add-bookmark-btn:hover {
-  background-color: #45a049;
+.tab.text {
+  color: white;
 }
 
-.bookmark-bar {
+.tab.active::before {
+  content: '';
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+}
+
+.grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 20px;
+  gap: 16px;
 }
 
-.bookmark-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 150px;
-  transition: transform 0.2s;
-}
-
-.bookmark-item:hover {
-  transform: scale(1.05);
-}
-
-.bookmark-icon-container {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-}
-
-.bookmark-icon {
+.card {
   width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
-
-.bookmark-info {
-  font-size: 14px;
-  color: #333;
-}
-
-.remove-btn {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.remove-btn:hover {
-  background-color: #c0392b;
-}
-
-/* Estilos del modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  max-width: 100px;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background-color: var(--bg-blur);
+  color: var(--text-color);
+  backdrop-filter: blur(.2rem);
+  text-decoration: none;
   text-align: center;
-}
-
-.modal-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.modal-btn {
-  background-color: #3498db;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
+}
+
+img {
   width: 100%;
-  margin-top: 10px;
+  max-width: 40px;
+  border-radius: .4rem;
 }
 
-.modal-btn.cancel {
-  background-color: #e74c3c;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.modal-btn:hover {
-  background-color: #2980b9;
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .url {
+  color: #bbb;
+  font-size: 0.9rem;
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+.edit {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.edit:hover {
+  color: #fff;
 }
 </style>
-
