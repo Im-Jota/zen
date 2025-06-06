@@ -2,21 +2,22 @@ import { defineStore } from 'pinia';
 
 const useTabStore = defineStore('tabStore', {
   state: () => ({
+    tabName: 'New Tab',
     theme: 'light',
     background: {
       type: 'Gradient',
       default: true,
       class: 'bg-orange',
-
     },
     shortcuts: true,
     state: true,
+    openLink: 'Self Tab',
   }),
 
   actions: {
     loadSettings () {
       document.documentElement.setAttribute('data-theme', this.theme);
-
+      document.title = this.tabName;
       this.changeBackground();
     },
 
@@ -27,6 +28,11 @@ const useTabStore = defineStore('tabStore', {
     setTheme() {
       this.theme = this.theme === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', this.theme)
+    },
+
+    setTitle(title) {
+        this.tabName = title;
+        document.title = this.tabName;
     },
 
     changeBackground(background){
@@ -57,6 +63,14 @@ const useTabStore = defineStore('tabStore', {
       this.shortcuts = !this.shortcuts;
       console.log(this.shortcuts)
     },
+
+    openLinkTab(url) {
+      if(this.openLink == 'New Tab') {
+        chrome.tabs.create({ url: url});
+      } else if(this.openLink == 'Self Tab') {
+        chrome.tabs.update({ url: url });
+      }
+    }
   },
 
   persist: {
