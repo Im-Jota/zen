@@ -12,6 +12,7 @@ const useTabStore = defineStore('tabStore', {
     shortcuts: true,
     state: true,
     openLink: 'Self Tab',
+    mode: 'Minimalist',
   }),
 
   actions: {
