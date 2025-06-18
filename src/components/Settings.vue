@@ -26,17 +26,22 @@
 
         <div v-if="tab === 1" class="settings">
           <div class="flex justify-between align-center">
+            <span>Background</span>
+            <Dropdown v-model="background.type" :options="backgrounds" @change="changeBackground()" />
+          </div>
+          <div class="flex justify-between align-center">
             <span>Dark Mode</span>
             <Switch @click="settings.setTheme()" :state="settings.theme == 'dark'" />
           </div>
           <div class="flex justify-between align-center">
+            <span>Select a mode</span>
+            <Dropdown v-model="settings.mode" :options="modes" @change="changeBackground()" />
+          </div>
+          <div class="flex justify-between align-center" v-if="settings.mode == 'Productivity'">
             <span>Personalize</span>
             <Switch @click="widgets.changeState" :state="widgets.state == true" />
           </div>
-          <div class="flex justify-between align-center">
-            <span>Background</span>
-            <Dropdown v-model="background.type" :options="backgrounds" @change="changeBackground()" />
-          </div>
+          
 
           <div v-if="background.type == 'Solid'" class="column ga-1">
             <div class="flex justify-between">
@@ -98,7 +103,8 @@ export default {
       ],
       openLinks: ['Self Tab', 'New Tab'],
       gradients: ['bg-orange', 'bg-green', 'bg-deal', 'bg-purple'],
-      backgrounds: ['Gradient', 'Unsplash']
+      backgrounds: ['Gradient', 'Unsplash'],
+      modes: ['Minimalist', 'Informative', 'Productivity'],
     }
   },
 
